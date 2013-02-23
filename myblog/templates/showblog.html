@@ -1,0 +1,136 @@
+{% extends 'index.html' %} 
+
+{% block title %} 
+{{ article.caption }} 
+{% endblock%} 
+
+{% block moreHeader %} 
+<link href="/static/css/code.css" rel="stylesheet"/>
+<link href="/static/css/article.css" rel="stylesheet"/>
+{% endblock%} 
+
+{% load markup %} 
+
+{% block Myblock%} 
+<div class="span11 offset1 margintop20">
+	<!--blog info-->
+	<!--===================-->
+	<div class="article">
+		<div class="title">
+			{{article.caption}}
+		</div>	
+		<div class="info margintop20">
+			<span class="names">信息: </span>
+			Post in:
+			<a href="/article/cat/{{article.category.id}}">{{article.category}}</a>
+			|
+			{{article.author}} 
+			|
+			{{article.publish_time}} 
+
+			<span class="tags">标签: </span>
+			{% for tag in article.tags.all%} 
+			<span class="tag">{{tag}} </span>
+			{% endfor %} 
+
+			{% if has_login %} 
+			<span class="choice delete">
+				<a href="/delete?id={{article.id}}">删除</a>
+			</span>
+			<span class="choice">
+				<a href="/modify?id={{article.id}}">修改</a>
+			</span>
+			{% endif %} 
+		</div>
+	<div class="content">
+		<p>{{article.content|markdown:'codehilite'}}</p> 
+	</div>
+</div>
+<hr/>
+
+<!--comments of the blog-->
+<!--==================-->
+<div class="comments article">	
+	<h4 class="muted comtop">Comments</h4>
+	{% for comment in comments %} 
+	<div class="comment margintop10">
+		<div class="info margintop10">
+			<span class="bold">由 </span>{{ comment.author }} 
+			<span class="bold">发表:</span>
+		</div>
+		<div class="margintop10 marginleft20">
+			{{ comment.content }} 
+		</div>
+		<div class="time margintop10">
+			{{ comment.publish_time }} 
+		</div>
+	</div>
+	{% endfor %} 
+</div>
+
+<!--comments-->
+	<!--===================-->
+	<div class="comment_form margintop20">
+		<h4 class="muted comtop">New Comments</h4>
+		<form method="post" action="">
+			{% csrf_token %} 
+
+			<div class="control-group">
+				<label class="control-lable" for="id_name">名字:</label>
+				{% if commentForm.name.errors %} 
+				<div class="alert alert-error">
+					{{ commentForm.name.errors}} 
+				</div>
+				{% endif %} 
+				{{ commentForm.name }} 
+			</div>
+
+			<div class="control-group">
+				<label class="control-lable" for="id_email">Email:</label>
+				{% if commentForm.email.errors %} 
+				<div class="alert alert-error">
+					{{ commentForm.email.errors}} 
+				</div>
+				{% endif %} 
+				{{ commentForm.email}} 
+			</div>
+
+			<div class="control-group">
+				<label class="control-lable" for="id_content">内容:</label>
+				{% if commentForm.content.errors %} 
+				<div class="alert alert-error">
+					{{ commentForm.content.errors}} 
+				</div>
+				{% endif %} 
+				{{ commentForm.content}} 
+			</div>
+
+			<input class="btn btn-primary" type="submit" value="提交">
+
+		</form>
+	</div>
+</div>
+
+
+<div class= "span5 articles">
+	<div class="category">
+		<div>
+			<span class="cat">分类目录</span>
+		</div>
+		<div class="splitLine"></div>
+		<div class="categorys">
+			<ul>
+				{% for category in categorys %} 
+				<li>
+				<a href="/article/cat/{{category.info.id}}/">{{ category.info.name}}</a>
+				({{ category.count}})
+				</li>
+				{% endfor %} 
+			</ul>
+		</div>
+	</div>
+</div>
+
+{% endblock%} 
+
+

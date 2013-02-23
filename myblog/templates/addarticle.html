@@ -1,0 +1,77 @@
+{% extends "index.html" %} 
+
+{% block moreHeader %} 
+<link href="/static/css/addarticle.css" rel="stylesheet"/>
+<script src="/static/vim-in-textarea/jsvim.js"></script>
+<script src="/static/js/addarticle.js"></script>
+<!--<script src="/static/vim-in-textarea/demo/fiddle.js"></script>-->
+{% endblock %} 
+
+{% block title%} 
+新建文章
+{% endblock %} 
+
+{% block Myblock %}
+<div class="container">
+	<form method="post" action="">
+		{% csrf_token %} 
+		<div class="field">
+			<label for="id_caption">标题: </label>
+			{% if form.caption.errors %}
+			<div class="alert alert-error">
+				{{ form.caption.errors }}          
+			</div>
+			{% endif %}
+			{{ form.caption }}
+		</div>
+		<div class="field">        
+			<label for="id_tag_name">标签:(多个标签以空格隔开) </label>
+			{% if form.tag_name.errors %}
+			<div class="alert alert-error">
+				{{ form.tag_name.errors }}
+			</div>
+			{% endif %}
+			{{ form.tag_name}}
+		</div>
+		<div class="field">
+			<label class="control-label" for="id_category">分类(新增或选择)</label>
+			{% if form.category.errors %}
+			<div class="alert alert-error">
+				{{ form.category.errors }}
+			</div>
+			{% endif %}
+			{{ form.category}}
+			<select class="categorySelector">
+				{% for category in categorys%} 
+				<option value="{{ category}} "> {{ category}} </option>
+				{% endfor %} 
+			</select>
+		</div>
+		<div>
+			<label class="radio" >
+				<input  id = 'vimMode'type="radio" name="Mode" ></input> Vim 模式编辑
+			</label>
+			<!--<label class="radio">-->
+			<!--	<input  id="normalMode" type="radio" name="Mode" checked ></input> Normal模式编辑-->
+			<!--</label>-->
+		</div>
+
+		<div class="field">        
+			<div class="vimInfo" style="display:none">
+				<span class="alert ">Vim信息：</span>
+				<span id='log' class="alert "></span>
+			</div>
+			{% if form.content.errors %}
+			<div class="alert alert-error">
+				{{ form.content.errors }}
+			</div>
+			{% endif %}
+			<label for="id_content">正文: </label>
+			{{ form.content }}
+		</div>
+		<div class="form-actions">
+			<input class="btn btn-primary" type="submit" value="提交">
+		</div>
+	</form>
+</div>
+{% endblock %} 

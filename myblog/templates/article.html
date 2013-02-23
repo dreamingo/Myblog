@@ -1,0 +1,77 @@
+{% extends "index.html" %} 
+{% block moreHeader %} 
+<link href="/static/css/article.css" rel="stylesheet"/>
+<link href="/static/css/code.css" rel="stylesheet"/>
+<script src="/static/js/article.js"></script>
+{% endblock %} 
+
+{% load markup %} 
+
+{%block title%} 
+我的日志
+{% endblock %} 
+{% block Myblock %} 
+<div class="span11 offset1">
+	<div class="articles">
+		{% for article in articles%} 
+		<div class="article">
+			<div class="title">
+				<div>
+					<span><a href="/showBlog?id={{article.id}}">{{article.caption}}</a></span>				
+				</div>
+			</div>
+			<div class="preview">		
+				<div class="content">
+					<p>{{article.content|markdown:'codehilite'}}</p> 
+				</div>
+			</div>
+
+			<div class="browseall">
+				<a href="/showBlog?id={{article.id}}">查看全文</a>
+			</div>
+			<div class="info margintop10">
+				<span class="names">信息: </span>
+				Post in:
+				<a href="/article/cat/{{article.category.id}}">{{article.category}}</a>
+				|
+				{{article.author}} 
+				|
+				{{article.publish_time}} 
+
+				<span class="tags">标签: </span>
+				{% for tag in article.tags.all%} 
+				<span class="tag">{{tag}} </span>
+				{% endfor %} 
+
+				{% if has_login %} 
+				<span class="choice delete">
+					<a href="/delete?id={{article.id}}">删除</a>
+				</span>
+				<span class="choice">
+					<a href="/modify?id={{article.id}}">修改</a>
+				</span>
+				{% endif %} 
+			</div>
+		</div>
+		{% endfor %} 
+	</div>
+</div>
+<div class= "span5 articles">
+	<div class="category">
+		<div>
+			<span class="cat">分类目录</span>
+		</div>
+		<div class="splitLine"></div>
+		<div class="categorys">
+			<ul>
+				{% for category in categorys %} 
+				<li>
+				<a href="/article/cat/{{category.info.id}}/">{{ category.info.name}}</a>
+				({{ category.count}})
+				</li>
+				{% endfor %} 
+			</ul>
+		</div>
+	</div>
+</div>
+{% endblock %} 

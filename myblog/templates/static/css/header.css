@@ -1,0 +1,10 @@
+/* .navbar .navbar-inner .userchoice{ */
+/* 	display:inline-block; */
+/* 	margin-left:30px; */
+/* 	margin-top:10px; */
+/* } */
+.navbar .choices{
+	float:right;
+	margin-right:30px;
+}
+
